@@ -12,6 +12,17 @@ import utils.Validator;
 public class AuthService implements AuthInterface {
     private User loggedInUser;
     private boolean isLogged;
+    private static AuthService instance;
+
+    private AuthService() {
+    }
+
+    public static AuthService getInstance() {
+        if (instance == null) {
+            instance = new AuthService();
+        }
+        return instance;
+    }
 
     public boolean register(Map<String, User> users, String fullName, String email, String password) {
         if (this.isLogged) {
@@ -86,55 +97,5 @@ public class AuthService implements AuthInterface {
 
     public boolean isLogged() {
         return this.isLogged;
-    }
-
-    public HashMap<String, String> registerAttempt() {
-        HashMap<String, String> registry = new HashMap<>();
-
-        registry.put("email", this.emailAttempt());
-        registry.put("fullName", this.fullNameAttempt());
-        registry.put("password", this.passwordAttempt());
-
-        return registry;
-    }
-
-    public HashMap<String, String> loginAttempt() {
-        HashMap<String, String> registry = new HashMap<>();
-
-        registry.put("email", this.emailAttempt());
-        registry.put("password", this.passwordAttempt());
-
-        return registry;
-    }
-
-    private String emailAttempt() {
-        String email;
-        do {
-            email = Console.ask("=> Enter an email");
-            if (!Validator.isValidEmail(email))
-                Console.error("Invalid Email");
-        } while (!Validator.isValidEmail(email));
-        return email;
-    }
-
-    private String fullNameAttempt() {
-        String fullName;
-        do {
-            fullName = Console.ask("=> Enter a full name");
-            if (!Validator.isValidFullName(fullName))
-                Console.error("Invalid full name");
-        } while (!Validator.isValidFullName(fullName));
-        return fullName;
-    }
-
-    private String passwordAttempt() {
-        String password;
-        do {
-            password = Console.ask("=> Enter a password");
-            if (!Validator.isValidPassword(password))
-                Console.error("Invalid password");
-        } while (!Validator.isValidPassword(password));
-
-        return password;
     }
 }

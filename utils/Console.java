@@ -19,7 +19,7 @@ public class Console {
     }
 
     public static void info(String msg) {
-        System.out.println(BLUE + "[INFO] " + msg + RESET);
+        System.out.println(BLUE + msg + RESET);
     }
 
     public static void error(String msg) {
@@ -27,7 +27,7 @@ public class Console {
     }
 
     public static void success(String msg) {
-        System.out.println(GREEN + "[SUCCESS] " + msg + RESET);
+        System.out.println(GREEN + msg + RESET);
     }
 
     public static void warning(String msg) {

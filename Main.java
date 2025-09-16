@@ -1,10 +1,13 @@
 import java.util.HashMap;
 
+import controllers.UserController;
+import models.User;
 import services.AuthService;
 import utils.Console;
 
 public class Main {
-    public AuthService auth = new AuthService();
+    private AuthService auth = AuthService.getInstance();
+    private UserController userController = new UserController();
 
     public static void main(String[] args) {
         Bootstrap.run();
@@ -20,21 +23,14 @@ public class Main {
             String opt = Console.ask("");
             switch (opt) {
                 case "0":
-                    this.exit();
+                    this.exit(0);
+
                 case "1":
-                    HashMap<String, String> register = this.auth.registerAttempt();
-                    this.auth.register(
-                            Bootstrap.users,
-                            register.get("fullName"),
-                            register.get("email"),
-                            register.get("password"));
+                    userController.register();
                     break;
 
                 case "2":
-                    HashMap<String, String> login = this.auth.loginAttempt();
-                    this.auth.login(Bootstrap.users,
-                            login.get("email"),
-                            login.get("password"));
+                    userController.login();
                     break;
 
                 default:
@@ -51,15 +47,23 @@ public class Main {
             String opt = Console.ask("");
             switch (opt) {
                 case "0":
-                    this.exit();
+                    this.exit(0);
                     break;
 
                 case "1":
-                    this.auth.logout();
+                    userController.logout();
+                    break;
+
+                case "2":
+                    userController.profile(this.auth.user());
+                    break;
+
+                case "3":
+                    this.profileUpdateSwitch();
                     break;
 
                 default:
-                    Console.error("Invalid option!");
+                    Console.error("Invalid option! Please select a valid menu item.");
             }
         }
         this.offMenu();
@@ -67,23 +71,67 @@ public class Main {
 
     private void offMenuSwitch() {
         Console.line();
-        Console.info("=== Welcome ===");
-        Console.info("1) Register a new account");
-        Console.info("2) Login to your account");
-        Console.info("0) Exit application");
+        Console.info("Welcome to the Reservation System!");
+        Console.info("Please choose an option:");
+        Console.info("  1) Register a new account");
+        Console.info("  2) Login to your account");
+        Console.info("  0) Exit application");
         Console.line();
     }
 
     private void onMenuSwitch() {
+        User user = this.auth.user();
+        if (user == null) {
+            Console.error("No user is currently logged in. Exiting...");
+            this.exit(1);
+        }
+
         Console.line();
-        Console.info("=== User Menu ===");
-        Console.info("1) Logout");
-        Console.info("0) Exit application");
+        Console.success("Hello, " + user.getFullName() + "!");
+        Console.info("Role: " + user.getRole());
+        Console.info("Choose an option:");
+        Console.info("  1) Logout");
+        Console.info("  2) View Profile");
+        Console.info("  3) Update Your Profile");
+        Console.info("  0) Exit application");
         Console.line();
     }
 
-    private void exit() {
+    private void exit(Integer code) {
+        Console.info("Thank you for using the Reservation System. Goodbye!");
         Console.close();
-        System.exit(0);
+        System.exit(code);
+    }
+
+    public void profileUpdateSwitch() {
+        boolean updateSession = true;
+        while (updateSession) {
+            this.profileUpdateMenu();
+            String opt = Console.ask("");
+            switch (opt) {
+                case "0":
+                    this.exit(0);
+                    break;
+
+                case "4":
+                    updateSession = false;
+                    break;
+
+                default:
+                    Console.error("Invalid option! Please select a valid menu item.");
+            }
+        }
+
+    }
+
+    public void profileUpdateMenu() {
+        Console.line();
+        Console.info("Choose an option:");
+        Console.info("  1) Update Your fullName");
+        Console.info("  2) Update Your Email");
+        Console.info("  3) Update Your Password");
+        Console.info("  4) Return To The Main Menu");
+        Console.info("  0) Exit application");
+        Console.line();
     }
 }
