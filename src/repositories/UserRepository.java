@@ -38,10 +38,10 @@ public class UserRepository implements RepositoryBase<User> {
     }
 
     @Override
-    public void delete(String key, Object value) {
+    public void delete(String key, String value) {
         // For now, only support deletion by "email"
-        if ("email".equalsIgnoreCase(key) && value instanceof String email) {
-            users.remove(email);
+        if ("email".equalsIgnoreCase(key)) {
+            users.remove(value);
         }
     }
 }

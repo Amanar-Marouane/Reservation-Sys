@@ -1,18 +1,22 @@
 package src.models;
 
+import src.utils.Str;
+
 public class Hotel {
     private String id;
     private String name;
     private String address;
     private Integer availableRooms;
     private Double rating;
+    private String note;
 
-    public Hotel(String id, String name, String address, Integer availableRooms, Double rating) {
-        this.id = id;
+    public Hotel(String name, String address, Integer availableRooms, Double rating, String note) {
+        this.id = Str.random(10);
         this.name = name;
         this.address = address;
         this.availableRooms = availableRooms;
         this.rating = rating;
+        this.note = note;
     }
 
     public String getId() {
@@ -53,5 +57,13 @@ public class Hotel {
 
     public void setRating(Double rating) {
         this.rating = rating;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

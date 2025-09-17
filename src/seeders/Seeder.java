@@ -33,10 +33,20 @@ public class Seeder {
         userRepository.save(normalUser);
 
         // Hotels
-        Hotel h1 = new Hotel("H001", "Hotel Atlas", "Marrakech", 10, 4.3);
+        Hotel h1 = new Hotel(
+                "Hotel Atlas",
+                "Marrakech",
+                10,
+                4.3,
+                "Perfect For Nature Lovers!!");
         hotelRepository.save(h1);
 
-        Hotel h2 = new Hotel("H002", "Hotel Sahara", "Agadir", 15, 4.0);
+        Hotel h2 = new Hotel(
+                "Hotel Sahara",
+                "Agadir",
+                15,
+                4.0,
+                "Romantic & Beautiful Nights? You Are At The Right Place!");
         hotelRepository.save(h2);
 
         System.out.println("Seeding complete.");

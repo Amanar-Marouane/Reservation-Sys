@@ -43,10 +43,10 @@ public class HotelRepository implements RepositoryBase<Hotel> {
     }
 
     @Override
-    public void delete(String key, Object value) {
+    public void delete(String key, String value) {
         // For now, only support deletion by "id"
-        if ("id".equalsIgnoreCase(key) && value instanceof String id) {
-            hotels.remove(id);
+        if ("id".equalsIgnoreCase(key)) {
+            hotels.remove(value);
         }
     }
 }

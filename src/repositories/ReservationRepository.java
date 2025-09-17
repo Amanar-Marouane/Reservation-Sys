@@ -51,7 +51,7 @@ public class ReservationRepository implements RepositoryBase<Reservation> {
     }
 
     @Override
-    public void delete(String key, Object value) {
+    public void delete(String key, String value) {
         Reservation r = this.find(key, value);
         if (r != null) {
             this.reservations.remove(r);

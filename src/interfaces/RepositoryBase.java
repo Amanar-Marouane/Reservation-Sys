@@ -33,5 +33,5 @@ public interface RepositoryBase<T> {
      * @param key   the field/property name
      * @param value the value to match for deletion
      */
-    void delete(String key, Object value);
+    void delete(String key, String value);
 }

@@ -93,29 +93,46 @@ public class UserController {
 
     public void update(String key) {
         User u = this.auth.user();
-        switch (key) {
-            case "email":
-                userRepository.delete("email", u.getEmail());
-                String email = this.emailAttempt();
-                u.setEmail(email);
-                this.userRepository.save(u);
-                break;
+        Console.line();
+        Console.info("Updating your " + key + "...");
 
-            case "fullName":
+        switch (key.toLowerCase()) {
+            case "email" -> {
+                String oldEmail = u.getEmail();
+                String email = this.emailAttempt();
+
+                if (email.equals(oldEmail)) {
+                    Console.warning("The new email is the same as your current one.");
+                    return;
+                }
+
+                // Check if email already exists
+                if (userRepository.find("email", email) != null) {
+                    Console.error("This email is already registered. Please use a different one.");
+                    return;
+                }
+
+                u.setEmail(email);
+                userRepository.save(u);
+                Console.success("Your email has been updated successfully.");
+            }
+            case "fullname" -> {
                 String fullName = this.fullNameAttempt();
                 u.setFullName(fullName);
-                this.userRepository.save(u);
-                break;
-
-            case "password":
+                // userRepository.save(u);
+                Console.success("Your full name has been updated successfully.");
+            }
+            case "password" -> {
                 String password = this.passwordAttempt();
                 u.setPassword(password);
-                this.userRepository.save(u);
-                break;
-
-            default:
-                Console.warning("Property choosed is not fillable");
-                break;
+                // userRepository.save(u);
+                Console.success("Your password has been updated successfully.");
+            }
+            case "exit" -> {
+                Console.info("Update aborted by user.");
+            }
+            default -> Console.warning("Property chosen is not fillable. Type 'exit' to cancel.");
         }
+        Console.line();
     }
 }
