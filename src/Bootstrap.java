@@ -1,13 +1,12 @@
-import repositories.HotelRepository;
-import repositories.UserRepository;
-import seeders.Seeder;
+package src;
+import src.seeders.Seeder;
 
 public class Bootstrap {
 
     public static void run() {
         System.out.println("Bootstrap running...");
 
-        Seeder.run(UserRepository.all(), HotelRepository.all());
+        Seeder.run();
 
         System.out.println("Bootstrap Done.");
     }

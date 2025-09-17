@@ -1,18 +1,19 @@
-package services;
+package src.services;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
-import enums.Roles;
-import interfaces.AuthInterface;
-import models.User;
-import utils.Console;
-import utils.Validator;
+
+import src.enums.Roles;
+import src.interfaces.AuthInterface;
+import src.models.User;
+import src.repositories.UserRepository;
+import src.utils.Console;
+import src.utils.Validator;
 
 public class AuthService implements AuthInterface {
     private User loggedInUser;
     private boolean isLogged;
     private static AuthService instance;
+    private static UserRepository userRepository = UserRepository.getInstance();
 
     private AuthService() {
     }
@@ -24,7 +25,7 @@ public class AuthService implements AuthInterface {
         return instance;
     }
 
-    public boolean register(Map<String, User> users, String fullName, String email, String password) {
+    public boolean register(String fullName, String email, String password) {
         if (this.isLogged) {
             Console.warning("Logout First!!");
             return false;
@@ -46,18 +47,18 @@ public class AuthService implements AuthInterface {
             return false;
         }
 
-        if (users.containsKey(email)) {
+        if (userRepository.find("email", email) != null) {
             Console.error("Registration failed: Email already exists.");
             return false;
         }
 
         User user = new User(UUID.randomUUID(), fullName, email, password, Roles.USER);
-        users.put(email, user);
+        userRepository.save(user);
         Console.success("Registration successful!");
         return true;
     }
 
-    public boolean login(Map<String, User> users, String email, String password) {
+    public boolean login(String email, String password) {
         if (this.isLogged) {
             Console.warning("You Already Logged In, Logout First!!");
             return false;
@@ -67,7 +68,7 @@ public class AuthService implements AuthInterface {
             Console.error("Login failed: Invalid email.");
             return false;
         }
-        User user = users.get(email);
+        User user = userRepository.find("email", email);
         if (user == null) {
             Console.error("Login failed: User not found.");
             return false;

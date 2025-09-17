@@ -1,15 +1,16 @@
-package controllers;
+package src.controllers;
 
 import java.util.HashMap;
 
-import models.User;
-import repositories.UserRepository;
-import services.AuthService;
-import utils.Console;
-import utils.Validator;
+import src.models.User;
+import src.repositories.UserRepository;
+import src.services.AuthService;
+import src.utils.Console;
+import src.utils.Validator;
 
 public class UserController {
     private AuthService auth = AuthService.getInstance();
+    private UserRepository userRepository = UserRepository.getInstance();
 
     private HashMap<String, String> registerAttempt() {
         HashMap<String, String> registry = new HashMap<>();
@@ -64,7 +65,6 @@ public class UserController {
     public void register() {
         HashMap<String, String> register = this.registerAttempt();
         this.auth.register(
-                UserRepository.all(),
                 register.get("fullName"),
                 register.get("email"),
                 register.get("password"));
@@ -72,13 +72,13 @@ public class UserController {
 
     public void login() {
         HashMap<String, String> login = this.loginAttempt();
-        this.auth.login(UserRepository.all(),
+        this.auth.login(
                 login.get("email"),
                 login.get("password"));
     }
 
     public void logout() {
-        this.logout();
+        this.auth.logout();
     }
 
     public void profile(User user) {
@@ -89,5 +89,33 @@ public class UserController {
         Console.info("Email     : " + user.getEmail());
         Console.info("Role      : " + user.getRole());
         Console.line();
+    }
+
+    public void update(String key) {
+        User u = this.auth.user();
+        switch (key) {
+            case "email":
+                userRepository.delete("email", u.getEmail());
+                String email = this.emailAttempt();
+                u.setEmail(email);
+                this.userRepository.save(u);
+                break;
+
+            case "fullName":
+                String fullName = this.fullNameAttempt();
+                u.setFullName(fullName);
+                this.userRepository.save(u);
+                break;
+
+            case "password":
+                String password = this.passwordAttempt();
+                u.setPassword(password);
+                this.userRepository.save(u);
+                break;
+
+            default:
+                Console.warning("Property choosed is not fillable");
+                break;
+        }
     }
 }

@@ -1,13 +1,18 @@
-package seeders;
+package src.seeders;
 
 import java.util.*;
 
-import models.Hotel;
-import models.User;
-import enums.Roles;
+import src.enums.Roles;
+import src.models.Hotel;
+import src.models.User;
+import src.repositories.HotelRepository;
+import src.repositories.UserRepository;
 
 public class Seeder {
-    public static void run(Map<String, User> users, Map<String, Hotel> hotels) {
+    private static UserRepository userRepository = UserRepository.getInstance();
+    private static HotelRepository hotelRepository = HotelRepository.getInstance();
+
+    public static void run() {
         System.out.println("Seeding data...");
 
         // Users
@@ -17,7 +22,7 @@ public class Seeder {
                 "marouane@gmail.com",
                 "mmMM00!!",
                 Roles.ADMIN);
-        users.put(admin.getEmail(), admin);
+        userRepository.save(admin);
 
         User normalUser = new User(
                 UUID.randomUUID(),
@@ -25,14 +30,14 @@ public class Seeder {
                 "omar@gmail.com",
                 "llLL00!!",
                 Roles.USER);
-        users.put(normalUser.getEmail(), normalUser);
+        userRepository.save(normalUser);
 
         // Hotels
         Hotel h1 = new Hotel("H001", "Hotel Atlas", "Marrakech", 10, 4.3);
-        hotels.put(h1.getId(), h1);
+        hotelRepository.save(h1);
 
         Hotel h2 = new Hotel("H002", "Hotel Sahara", "Agadir", 15, 4.0);
-        hotels.put(h2.getId(), h2);
+        hotelRepository.save(h2);
 
         System.out.println("Seeding complete.");
     }

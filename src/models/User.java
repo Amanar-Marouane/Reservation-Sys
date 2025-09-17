@@ -1,7 +1,8 @@
-package models;
+package src.models;
 
 import java.util.UUID;
-import enums.Roles;
+
+import src.enums.Roles;
 
 public class User {
     private UUID id;

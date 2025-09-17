@@ -1,23 +1,15 @@
-import java.util.HashMap;
+package src.ui;
 
-import controllers.UserController;
-import models.User;
-import services.AuthService;
-import utils.Console;
+import src.controllers.UserController;
+import src.models.User;
+import src.services.AuthService;
+import src.utils.Console;
 
-public class Main {
+public class MainConsole {
     private AuthService auth = AuthService.getInstance();
     private UserController userController = new UserController();
 
-    public static void main(String[] args) {
-        Bootstrap.run();
-
-        Main app = new Main();
-
-        app.offMenu();
-    }
-
-    private void offMenu() {
+    public void offMenu() {
         while (!auth.isLogged()) {
             this.offMenuSwitch();
             String opt = Console.ask("");
@@ -41,7 +33,7 @@ public class Main {
         this.onMenu();
     }
 
-    private void onMenu() {
+    public void onMenu() {
         while (auth.isLogged()) {
             this.onMenuSwitch();
             String opt = Console.ask("");
@@ -97,7 +89,7 @@ public class Main {
         Console.line();
     }
 
-    private void exit(Integer code) {
+    public void exit(Integer code) {
         Console.info("Thank you for using the Reservation System. Goodbye!");
         Console.close();
         System.exit(code);
@@ -113,6 +105,18 @@ public class Main {
                     this.exit(0);
                     break;
 
+                case "1":
+                    this.userController.update("fullName");
+                    break;
+
+                case "2":
+                    this.userController.update("email");
+                    break;
+
+                case "3":
+                    this.userController.update("password");
+                    break;
+
                 case "4":
                     updateSession = false;
                     break;
@@ -121,10 +125,9 @@ public class Main {
                     Console.error("Invalid option! Please select a valid menu item.");
             }
         }
-
     }
 
-    public void profileUpdateMenu() {
+    private void profileUpdateMenu() {
         Console.line();
         Console.info("Choose an option:");
         Console.info("  1) Update Your fullName");
