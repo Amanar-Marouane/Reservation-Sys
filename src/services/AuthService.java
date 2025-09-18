@@ -13,9 +13,10 @@ public class AuthService implements AuthInterface {
     private User loggedInUser;
     private boolean isLogged;
     private static AuthService instance;
-    private static UserRepository userRepository = UserRepository.getInstance();
+    private static UserRepository userRepository;
 
     private AuthService() {
+        userRepository = UserRepository.getInstance();
     }
 
     public static AuthService getInstance() {
