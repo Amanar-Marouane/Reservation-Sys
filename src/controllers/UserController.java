@@ -63,18 +63,44 @@ public class UserController {
     }
 
     public void register() {
+        Console.info("Processing registration...");
+
         HashMap<String, String> register = this.registerAttempt();
-        this.auth.register(
-                register.get("fullName"),
-                register.get("email"),
-                register.get("password"));
+        String fullName = register.get("fullName");
+        String email = register.get("email");
+        String password = register.get("password");
+
+        if (!Validator.isValidEmail(email)) {
+            Console.error("Registration failed: Invalid email format.");
+            return;
+        }
+
+        if (!Validator.isValidFullName(fullName)) {
+            Console.error("Registration failed: Invalid full name format.");
+            return;
+        }
+
+        if (!Validator.isValidPassword(password)) {
+            Console.error("Registration failed: Password does not meet requirements.");
+            return;
+        }
+
+        this.auth.register(fullName, email, password);
     }
 
     public void login() {
+        Console.info("Processing login...");
+
         HashMap<String, String> login = this.loginAttempt();
-        this.auth.login(
-                login.get("email"),
-                login.get("password"));
+        String email = login.get("email");
+        String password = login.get("password");
+
+        if (!Validator.isValidEmail(email)) {
+            Console.error("Login failed: Invalid email format.");
+            return;
+        }
+
+        this.auth.login(email, password);
     }
 
     public void logout() {

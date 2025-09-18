@@ -5,7 +5,6 @@ import src.interfaces.AuthInterface;
 import src.models.User;
 import src.repositories.UserRepository;
 import src.utils.Console;
-import src.utils.Validator;
 
 public class AuthService implements AuthInterface {
     private User loggedInUser;
@@ -26,23 +25,7 @@ public class AuthService implements AuthInterface {
 
     public boolean register(String fullName, String email, String password) {
         if (this.isLogged) {
-            Console.warning("Logout First!!");
-            return false;
-        }
-
-        Console.info("Processing registration...");
-        if (!Validator.isValidEmail(email)) {
-            Console.error("Registration failed: Invalid email.");
-            return false;
-        }
-
-        if (!Validator.isValidFullName(fullName)) {
-            Console.error("Registration failed: Invalid full name.");
-            return false;
-        }
-
-        if (!Validator.isValidPassword(password)) {
-            Console.error("Registration failed: Invalid password.");
+            Console.warning("You must log out first before registering a new account.");
             return false;
         }
 
@@ -59,14 +42,10 @@ public class AuthService implements AuthInterface {
 
     public boolean login(String email, String password) {
         if (this.isLogged) {
-            Console.warning("You Already Logged In, Logout First!!");
+            Console.warning("You are already logged in. Please log out first.");
             return false;
         }
-        Console.info("Processing login...");
-        if (!Validator.isValidEmail(email)) {
-            Console.error("Login failed: Invalid email.");
-            return false;
-        }
+
         User user = userRepository.find("email", email);
         if (user == null) {
             Console.error("Login failed: User not found.");
@@ -78,6 +57,7 @@ public class AuthService implements AuthInterface {
             return false;
         }
 
+        // Set login state
         this.loggedInUser = user;
         this.isLogged = true;
         Console.success("Login successful!");
