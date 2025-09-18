@@ -11,8 +11,8 @@ public class User {
     private String password;
     private Roles role;
 
-    public User(UUID id, String fullName, String email, String password, Roles role) {
-        this.id = id;
+    public User(String fullName, String email, String password, Roles role) {
+        this.id = UUID.randomUUID();
         this.fullName = fullName;
         this.email = email;
         this.password = password;

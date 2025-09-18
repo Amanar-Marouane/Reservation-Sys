@@ -1,21 +1,22 @@
 package src.models;
 
-import java.sql.Date;
+import java.time.Instant;
+import java.util.Date;
 import java.util.UUID;
 
 public class Reservation {
     private UUID id;
     private Date timestamp;
-    private String userId;
+    private UUID userId;
     private String hotelId;
     private Integer nights;
 
-    public Reservation(UUID id, Date timestamp, String userId, String hotelId, Integer nights) {
-        this.id = id;
-        this.timestamp = timestamp;
+    public Reservation(UUID userId, String hotelId, Integer nights) {
+        this.id = UUID.randomUUID();
         this.userId = userId;
         this.hotelId = hotelId;
         this.nights = nights;
+        this.timestamp = Date.from(Instant.now());
     }
 
     public UUID getId() {
@@ -34,11 +35,11 @@ public class Reservation {
         this.timestamp = timestamp;
     }
 
-    public String getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 

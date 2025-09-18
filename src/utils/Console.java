@@ -53,4 +53,17 @@ public class Console {
     public static void close() {
         scanner.close();
     }
+
+    public static boolean confirm(String prompt) {
+        while (true) {
+            String response = ask(prompt + " (y/N)").toLowerCase();
+            if (response.equals("yes") || response.equals("y")) {
+                return true;
+            } else if (response.equals("no") || response.equals("n") || response.isEmpty()) {
+                return false;
+            } else {
+                warning("Please answer with 'y/yes' or 'n/no'");
+            }
+        }
+    }
 }

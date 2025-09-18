@@ -1,5 +1,6 @@
 package src.ui;
 
+import src.Bootstrap;
 import src.enums.Roles;
 import src.helpers.AuthHelper;
 import src.models.User;
@@ -18,18 +19,41 @@ public class Menu {
         Console.line();
     }
 
-    public static void onMenu() {
+    public static void InUserMenu() {
         User user = AuthHelper.shouldBeIn();
+        if (user.getRole() == Roles.ADMIN) {
+            Console.warning("User session detected, but you have administrator privileges!");
+            Console.warning("Exiting...");
+            Bootstrap.exit(0);
+        }
 
         Console.line();
-        Console.success("Hello, " + user.getFullName() + "!");
-        Console.info("Current Role: " + user.getRole());
         Console.info("Choose an option:");
         Console.info("  1) Logout");
         Console.info("  2) View Your Profile");
         Console.info("  3) Manage Your Profile Settings");
-        if (user.getRole() == Roles.ADMIN)
-            Console.info("  4) Manage Hotels");
+        Console.info("  4) List All Hotels");
+        Console.info("  5) Search for a Hotel");
+        Console.info("  6) Manage Your Reservations");
+        Console.info("  0) Exit Application");
+        Console.line();
+    }
+
+    public static void InAdminMenu() {
+        User user = AuthHelper.shouldBeIn();
+        if (user.getRole() == Roles.USER) {
+            Console.warning("Admin session detected, but you only have user privileges!");
+            Console.warning("Exiting...");
+            Bootstrap.exit(0);
+        }
+
+        Console.line();
+        Console.info("Choose an option:");
+        Console.info("  1) Logout");
+        Console.info("  2) View Your Profile");
+        Console.info("  3) Manage Your Profile Settings");
+        Console.info("  4) Manage Hotels");
+        Console.info("  5) See All Reservations");
         Console.info("  0) Exit Application");
         Console.line();
     }
@@ -60,5 +84,23 @@ public class Menu {
         Console.info("  6) Return to the Main Menu");
         Console.info("  0) Exit Application");
         Console.line();
+    }
+
+    public static void reservationMenu() {
+        AuthHelper.shouldBeIn();
+
+        Console.line();
+        Console.info("Reservation Management:");
+        Console.info("  1) View All Your Reservations");
+        Console.info("  2) Make a New Reservation");
+        Console.info("  3) Cancel a Reservation");
+        Console.info("  4) Return to the Main Menu");
+        Console.info("  0) Exit Application");
+        Console.line();
+    }
+
+    public static void self(User u) {
+        Console.success("Hello, " + u.getFullName() + "!");
+        Console.info("Current Role: " + u.getRole());
     }
 }

@@ -34,6 +34,13 @@ public class HotelController extends Controller {
     public void describeAll() {
         Console.line();
         List<Hotel> hotels = this.all();
+
+        if (hotels.isEmpty()) {
+            Console.warning("No hotels found in the system.");
+            return;
+        }
+
+        Console.success("=== Available Hotels (" + hotels.size() + ") ===");
         for (Hotel h : hotels) {
             this.describe(h);
         }
@@ -145,16 +152,16 @@ public class HotelController extends Controller {
             Console.line();
             return;
         }
-        
+
         Hotel h = this.find();
         if (h == null) {
             Console.warning("Delete operation canceled.");
             return;
         }
-        
+
         // Confirm deletion
-        String confirm = Console.ask("Are you sure you want to delete this hotel? (yes/no)");
-        if (confirm.equalsIgnoreCase("yes")) {
+        boolean confirm = Console.confirm("Are you sure you want to delete this hotel?");
+        if (confirm) {
             hotelRepository.delete("id", h.getId());
             Console.success("Hotel with ID '" + h.getId() + "' deleted successfully.");
         } else {

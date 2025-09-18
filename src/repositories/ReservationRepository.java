@@ -35,7 +35,7 @@ public class ReservationRepository implements RepositoryBase<Reservation> {
                 Field field = Reservation.class.getDeclaredField(key);
                 field.setAccessible(true); // allow private fields
                 Object fieldValue = field.get(r);
-                if (value.equals(fieldValue)) {
+                if (value.toString().equals(fieldValue.toString())) {
                     return r;
                 }
             } catch (NoSuchFieldException | IllegalAccessException e) {

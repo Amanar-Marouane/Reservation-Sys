@@ -42,15 +42,15 @@ All repository classes (UserRepository, HotelRepository, ReservationRepository) 
 
 - **Shared Data Access**: Ensures all components access the same data collection
 - **Object Reference Sharing**: Allows entities to be shared by reference across the application
-- **Simplified Object Manipulation**: Makes it easier to update objects in one place and have those changes reflected everywhere since object shared by reference
+- **Simplified Object Manipulation**: Makes it easier to update objects in one place and have those changes reflected everywhere since objects are shared by reference
 - **In-Memory Data Consistency**: Maintains consistency for our in-memory data store without needing a database
 
 ## Getting Started
 
 To run the application:
 
-1. Compile the Java files ```javac ./src/Main.java```
-2. Run the Main class ```java ./src/Main.java```
+1. Compile the Java files: ```javac ./src/Main.java```
+2. Run the Main class: ```java ./src/Main.java```
 3. Default admin credentials:
    - Email: marouane@gmail.com
    - Password: mmMM00!!

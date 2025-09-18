@@ -1,7 +1,5 @@
 package src.services;
 
-import java.util.UUID;
-
 import src.enums.Roles;
 import src.interfaces.AuthInterface;
 import src.models.User;
@@ -53,7 +51,7 @@ public class AuthService implements AuthInterface {
             return false;
         }
 
-        User user = new User(UUID.randomUUID(), fullName, email, password, Roles.USER);
+        User user = new User(fullName, email, password, Roles.USER);
         userRepository.save(user);
         Console.success("Registration successful!");
         return true;
