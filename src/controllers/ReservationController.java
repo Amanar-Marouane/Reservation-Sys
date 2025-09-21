@@ -2,6 +2,7 @@ package src.controllers;
 
 import java.util.List;
 
+import src.enums.ReservationStatus;
 import src.helpers.AuthHelper;
 import src.models.Hotel;
 import src.models.Reservation;
@@ -61,6 +62,7 @@ public class ReservationController extends Controller {
         Console.info("Hotel ID       : " + r.getHotelId());
         Console.info("Nights         : " + r.getNights());
         Console.info("TimeStamp      : " + r.getTimestamp());
+        Console.info("Status         : " + r.getStatus());
         Console.line();
     }
 
@@ -84,20 +86,17 @@ public class ReservationController extends Controller {
         List<Reservation> reservations = this.all();
         Console.line();
 
-        int userReservationCount = 0;
-        for (Reservation r : reservations) {
-            if (u.getId().equals(r.getUserId())) {
-                if (userReservationCount == 0) {
-                    Console.success("=== Your Reservations ===");
-                }
-                describe(r);
-                userReservationCount++;
-            }
+        List<Reservation> userReservations = reservations.stream()
+                .filter(r -> u.getId().equals(r.getUserId()))
+                .toList();
+
+        if (userReservations.isEmpty()) {
+            Console.warning("You don't have any reservations yet.");
+            return;
         }
 
-        if (userReservationCount == 0) {
-            Console.warning("You don't have any reservations yet.");
-        }
+        Console.success("=== Your Reservations ===");
+        userReservations.forEach(this::describe);
     }
 
     public Reservation find() {
@@ -113,17 +112,23 @@ public class ReservationController extends Controller {
         }
     }
 
-    public void delete() {
+    public void cancel() {
+        User u = AuthHelper.shouldBeIn();
         Reservation r = this.find();
         if (r == null) {
             Console.warning("Cancel operation canceled.");
             return;
         }
 
+        if(!r.getUserId().equals(u.getId())){
+            Console.error("You can only cancel your own reservations.");
+            return;
+        }
+
         // Confirm deletion
         boolean confirm = Console.confirm("Are you sure you want to cancel this reservation? (yes/no)");
         if (confirm) {
-            reservationRepository.delete("id", r.getId().toString());
+            r.setStatus(ReservationStatus.CANCELLED);
             Console.success("Reservation with ID '" + r.getId() + "' canceled successfully.");
         } else {
             Console.warning("Operation canceled.");

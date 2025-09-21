@@ -148,7 +148,7 @@ public class MainConsole {
                         reservationController.store(h);
                     }
                 }
-                case "3" -> reservationController.delete();
+                case "3" -> reservationController.cancel();
                 case "4" -> {
                     return;
                 }

@@ -4,12 +4,15 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
 
+import src.enums.ReservationStatus;
+
 public class Reservation {
     private UUID id;
     private Date timestamp;
     private UUID userId;
     private String hotelId;
     private Integer nights;
+    private ReservationStatus status;
 
     public Reservation(UUID userId, String hotelId, Integer nights) {
         this.id = UUID.randomUUID();
@@ -17,6 +20,7 @@ public class Reservation {
         this.hotelId = hotelId;
         this.nights = nights;
         this.timestamp = Date.from(Instant.now());
+        this.status = ReservationStatus.ACTIVE;
     }
 
     public UUID getId() {
@@ -57,5 +61,13 @@ public class Reservation {
 
     public void setNights(Integer nights) {
         this.nights = nights;
+    }
+
+    public ReservationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ReservationStatus status) {
+        this.status = status;
     }
 }
